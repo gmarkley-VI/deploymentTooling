@@ -1,0 +1,15 @@
+--- azureTest/manifests/cloud-provider-config.yaml	2020-03-23 15:42:13.289749717 +0000
++++ backups/cloud-provider-config.yaml	2020-03-23 15:53:38.928761193 +0000
+@@ -11,9 +11,9 @@
+     \"\",\n\t\"vmType\": \"\",\n\t\"primaryScaleSetName\": \"\",\n\t\"cloudProviderBackoff\":
+     true,\n\t\"cloudProviderBackoffRetries\": 0,\n\t\"cloudProviderBackoffExponent\":
+     0,\n\t\"cloudProviderBackoffDuration\": 6,\n\t\"cloudProviderBackoffJitter\":
+-    0,\n\t\"cloudProviderRateLimit\": true,\n\t\"cloudProviderRateLimitQPS\": 6,\n\t\"cloudProviderRateLimitBucket\":
+-    10,\n\t\"cloudProviderRateLimitQPSWrite\": 6,\n\t\"cloudProviderRateLimitBucketWrite\":
+-    10,\n\t\"useInstanceMetadata\": true,\n\t\"loadBalancerSku\": \"standard\",\n\t\"excludeMasterFromStandardLB\":
++    0,\n\t\"cloudProviderRateLimit\": false,\n\t\"cloudProviderRateLimitQPS\": 0,\n\t\"cloudProviderRateLimitBucket\":
++    0,\n\t\"cloudProviderRateLimitQPSWrite\": 0,\n\t\"cloudProviderRateLimitBucketWrite\":
++    0,\n\t\"useInstanceMetadata\": true,\n\t\"loadBalancerSku\": \"standard\",\n\t\"excludeMasterFromStandardLB\":
+     null,\n\t\"disableOutboundSNAT\": null,\n\t\"maximumLoadBalancerRuleCount\": 0\n}\n"
+ kind: ConfigMap
+ metadata:
