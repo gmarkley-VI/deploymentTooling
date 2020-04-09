@@ -33,29 +33,49 @@ if [ -n "$1" ]; then
     az network nsg rule create -g $INFRAID-rg --nsg-name $INFRAID-node-nsg -n AllLocalWorker --priority 520 --source-address-prefixes 10.0.0.0/16 --destination-port-ranges 0-65535
     #TODO Automate the process of Deployment via a templete here
     NODENAME="winnode"$(date +%d%H%M%S)""
+    sed -i "30c\            \"value\": \"$NODENAME\"" template/parameters.json
     PASSWD="$(openssl rand -base64 20)"
-    az group create--resource-group $INFRAID-rg
+    sed -i "45c\            \"value\": \"$PASSWD\"" template/parameters.json
+    sed -i "33c\            \"value\": \"$INFRAID-rg\"" template/parameters.json
+    sed -i "21c\            \"value\": \"$NODENAME-ip\"" template/parameters.json
+    SUBSCRIPTID="$(az account list | jq -r '.[] | .id')"
+    sed -i "18c\            \"value\": \"/subscriptions/$SUBSCRIPTID/resourceGroups/$INFRAID-rg/providers/Microsoft.Network/virtualNetworks/$INFRAID-vnet\"" template/parameters.json
+    sed -i "15c\            \"value\": \"$INFRAID-worker-subnet\"" template/parameters.json
+    sed -i "12c\            \"value\": \"/subscriptions/$SUBSCRIPTID/resourceGroups/$INFRAID-rg/providers/Microsoft.Network/loadBalancers/$INFRAID/backendAddressPools/$INFRAID\"" template/parameters.json
+    NUM=`echo $(( $RANDOM % 999 ))`
+    sed -i "9c\            \"value\": \"$NODENAME$NUM\"" template/parameters.json
+    LOCATION="$(az group show -n "$INFRAID-rg" | jq -r '.location')"
+    sed -i "6c\            \"value\": \"$LOCATION\"" template/parameters.json
+
     az deployment group create \
-      --name ExampleDeployment \
-      --resource-group ExampleGroup \
-      --template-file storage.json \
-      --parameters storageAccountType=Standard_GRS
-    #TODO Run Powershell commands here to enable Ansible
-    #NODEIP="$(az vm list-ip-addresses -g gmarkley-fnmpq-rg -n $NODENAME | jq -r '.[] | .virtualMachine.network.publicIpAddresses | .[] | .ipAddress')"
+      --name addWindowsNode \
+      --resource-group $INFRAID-rg \
+      --template-file template/template.json \
+      --parameters template/parameters.json
+
+    echo "Windows Node Added"
+    NODEIP="$(az vm list-ip-addresses -g gmarkley-fnmpq-rg -n $NODENAME | jq -r '.[] | .virtualMachine.network.publicIpAddresses | .[] | .ipAddress')"
     #create the hosts file need a config file for this.
-    #az vm run-command invoke --command-id RunPowerShellScript --name $NODENAME -g $INFRAID-rg --scripts backups/ansibleSetupPS
-    #az vm run-command invoke --command-id RunPowerShellScript --name $NODENAME -g $INFRAID-rg --scripts backups/loggingSetupPS
+    az vm run-command invoke --command-id RunPowerShellScript --name $NODENAME -g $INFRAID-rg --scripts @backups/ansibleSetupPS
+    az vm run-command invoke --command-id RunPowerShellScript --name $NODENAME -g $INFRAID-rg --scripts @backups/loggingSetupPS
 
     echo "Setup WMCB"
-    #git clone https://github.com/openshift/windows-machine-config-bootstrapper.git
-    #sed -i '328c\      shell: "echo $NODENAME"' windows-machine-config-bootstrapper/tools/ansible/tasks/wsu/main.yaml
+    git clone https://github.com/openshift/windows-machine-config-bootstrapper.git
+    sed -i "328c\      shell: \"echo $NODENAME\"" windows-machine-config-bootstrapper/tools/ansible/tasks/wsu/main.yaml
 
-    echo "Create hosts file"
-    #TODO combine createHostsFile.sh here
+    #create a hosts file
+    cp backups/hosts .
+    CURL=$(oc cluster-info | head -n1 | sed 's/.*\/\/api.//g'| sed 's/:.*//g')
+    sed -i "s/<node_ip>/$NODEIP/g" hosts
+    sed -i "s/<password>/\x27$PASSWD\x27/g" hosts
+    sed -i "s/<username>/core/g" hosts
+    sed -i "s/<cluster_address>/$CURL/g" hosts
+
     #Ansible Commands here down
-    echo "Ansible boot strap the windows node"
-    echo "ansible win -i hosts -m win_ping -v"
-    echo "ansible-playbook -i hosts windows-machine-config-bootstrapper/tools/ansible/tasks/wsu/main.yaml -v"
+    ansible win -i hosts -m win_ping -v
+    ansible-playbook -i hosts windows-machine-config-bootstrapper/tools/ansible/tasks/wsu/main.yaml -v
+
+    oc get nodes
   fi
 else
   echo "Install directory not supplied."
