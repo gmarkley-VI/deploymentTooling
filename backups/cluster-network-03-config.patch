@@ -1,0 +1,22 @@
+--- cluster-network-02-config.yml	2020-04-09 14:32:01.238855120 +0000
++++ cluster-network-03-config.yml	2020-04-09 14:35:16.229700706 +0000
+@@ -1,4 +1,4 @@
+-apiVersion: config.openshift.io/v1
++apiVersion: operator.openshift.io/v1
+ kind: Network
+ metadata:
+   creationTimestamp: null
+@@ -11,5 +11,12 @@
+     policy: {}
+   networkType: OVNKubernetes
+   serviceNetwork:
+-  - 172.30.0.0/16
++  - 172.30.0.0/16i
++  defaultNetwork:
++    type: OVNKubernetes
++    ovnKubernetesConfig:
++      hybridOverlayConfig:
++        hybridClusterNetwork:
++        - cidr: 10.132.0.0/14
++          hostPrefix: 23
+ status: {}
