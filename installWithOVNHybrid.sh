@@ -2,7 +2,7 @@
 
 #create the config
 if [ -n "$1" ]; then
-  $1="$(echo $1 | tr -d \/)"
+  1="$(echo $1 | tr -d \/)"
   if [ ! -f $1/install-config.yaml ]; then
     PREWD="$(pwd)"
     openshift-install create install-config --dir=$1
