@@ -3,21 +3,19 @@
 #create the config
 if [ -n "$1" ]; then
   if [ ! -f $1/install-config.yaml ]; then
-    echo "openshift-install create install-config --dir=$1"
+    PREWD="$(pwd)"
     openshift-install create install-config --dir=$1
-    echo "sed -i 's/OpenShiftSDN/OVNKubernetes/g' $1/install-config.yaml"
     sed -i 's/OpenShiftSDN/OVNKubernetes/g' $1/install-config.yaml
-    echo "openshift-install create manifests --dir=$1"
     openshift-install create manifests --dir=$1
-    echo "patch $1/manifests/cloud-provider-config.yaml backups/cloud-provider-config.patch"
     patch $1/manifests/cloud-provider-config.yaml backups/cloud-provider-config.patch
-    echo "cp backups/cluster-network-03-config.yml $1/manifests/."
-    cp backups/cluster-network-03-config.yml $1/manifests/.
+    cp $1/manifests/cluster-network-02-config.yml $1/manifests/cluster-network-03-config.yml
+    patch $1/manifests/cluster-network-03-config.yml backups/cluster-network-03-config.patch
     echo "Patching Complete Preparing to install"
-    echo "openshift-install create cluster --dir=$1"
     openshift-install create cluster --dir=$1
     echo "Install is completed"
-    export KUBECONFIG=/home/gmarkley/azureTest/auth/kubeconfig
+    export KUBECONFIG=$PREWD/$1/auth/kubeconfig
+    oc get nodes
+    oc get network.operator cluster -o yaml
     #./wni azure create --kubeconfig $1/auth/kubeconfig --credentials ~/.azure/osServicePrincipal.json --image-id MicrosoftWindowsServer:WindowsServer:2019-Datacenter-with-Containers:latest --instance-type Standard_D2s_v3 --dir $1
     echo "Create windows worker and RDP into Windows node and setup ansible"
     echo "Create hosts file"
