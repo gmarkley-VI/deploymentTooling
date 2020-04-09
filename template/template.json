@@ -95,7 +95,7 @@
                 "name": "[parameters('publicIpAddressSku')]"
             },
             "tags": {
-                "kubernetes.io-cluster-gmarkley-fnmpq": "owned"
+                "kubernetes.io-cluster-ID": "owned"
             }
         },
         {
