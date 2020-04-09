@@ -1,0 +1,22 @@
+[
+  {
+    "virtualMachine": {
+      "name": "winnode",
+      "network": {
+        "privateIpAddresses": [
+          "10.0.32.7"
+        ],
+        "publicIpAddresses": [
+          {
+            "id": "/subscriptions/5f675811-04fa-483f-9709-ffd8a9da03f0/resourceGroups/gmarkley-fnmpq-rg/providers/Microsoft.Network/publicIPAddresses/winnode-ip",
+            "ipAddress": "40.89.243.79",
+            "ipAllocationMethod": "Static",
+            "name": "winnode-ip",
+            "resourceGroup": "gmarkley-fnmpq-rg"
+          }
+        ]
+      },
+      "resourceGroup": "gmarkley-fnmpq-rg"
+    }
+  }
+]
