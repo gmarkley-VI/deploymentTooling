@@ -1,0 +1,48 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "centralus"
+        },
+        "networkInterfaceName": {
+            "value": "winnode474"
+        },
+        "backendPoolId": {
+            "value": "/subscriptions/5f675811-04fa-483f-9709-ffd8a9da03f0/resourceGroups/gmarkley-fnmpq-rg/providers/Microsoft.Network/loadBalancers/gmarkley-fnmpq/backendAddressPools/gmarkley-fnmpq"
+        },
+        "subnetName": {
+            "value": "gmarkley-fnmpq-worker-subnet"
+        },
+        "virtualNetworkId": {
+            "value": "/subscriptions/5f675811-04fa-483f-9709-ffd8a9da03f0/resourceGroups/gmarkley-fnmpq-rg/providers/Microsoft.Network/virtualNetworks/gmarkley-fnmpq-vnet"
+        },
+        "publicIpAddressName": {
+            "value": "winnode-ip"
+        },
+        "publicIpAddressType": {
+            "value": "Static"
+        },
+        "publicIpAddressSku": {
+            "value": "Standard"
+        },
+        "virtualMachineName": {
+            "value": "winnode"
+        },
+        "virtualMachineRG": {
+            "value": "gmarkley-fnmpq-rg"
+        },
+        "osDiskType": {
+            "value": "Premium_LRS"
+        },
+        "virtualMachineSize": {
+            "value": "Standard_D2s_v3"
+        },
+        "adminUsername": {
+            "value": "core"
+        },
+        "adminPassword": {
+            "value": null
+        }
+    }
+}
