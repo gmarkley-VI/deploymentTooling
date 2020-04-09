@@ -18,6 +18,9 @@ if [ -n "$1" ]; then
     oc get network.operator cluster -o yaml
     #./wni azure create --kubeconfig $1/auth/kubeconfig --credentials ~/.azure/osServicePrincipal.json --image-id MicrosoftWindowsServer:WindowsServer:2019-Datacenter-with-Containers:latest --instance-type Standard_D2s_v3 --dir $1
     echo "Create windows worker and RDP into Windows node and setup ansible"
+    #TODO Automate the process of Deployment via a templete here
+    #TODO Automate the firewall rull change for Deployment
+    #TODO Run Powershell commands here to enable Ansible
     echo "Create hosts file"
     echo "Ansible boot strap the windows node"
     echo "ansible win -i hosts -m win_ping -v"
