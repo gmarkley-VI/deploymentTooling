@@ -47,7 +47,7 @@ if [ -n "$1" ]; then
     LOCATION="$(az group show -n "$INFRAID-rg" | jq -r '.location')"
     sed -i "6c\            \"value\": \"$LOCATION\"" template/parameters.json
 
-    sed -i "s/kubernetes.io-cluster-ID/kubernetes.io-cluster-$INFRAID" template/template.json
+    sed -i "s/kubernetes.io-cluster-ID/kubernetes.io-cluster-$INFRAID/g" template/template.json
 
     az deployment group create \
       --name addWindowsNode \
