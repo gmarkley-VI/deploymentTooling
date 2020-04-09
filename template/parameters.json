@@ -9,13 +9,13 @@
             "value": "winnode474"
         },
         "backendPoolId": {
-            "value": "/subscriptions/5f675811-04fa-483f-9709-ffd8a9da03f0/resourceGroups/gmarkley-fnmpq-rg/providers/Microsoft.Network/loadBalancers/gmarkley-fnmpq/backendAddressPools/gmarkley-fnmpq"
+            "value": ""
         },
         "subnetName": {
-            "value": "gmarkley-fnmpq-worker-subnet"
+            "value": ""
         },
         "virtualNetworkId": {
-            "value": "/subscriptions/5f675811-04fa-483f-9709-ffd8a9da03f0/resourceGroups/gmarkley-fnmpq-rg/providers/Microsoft.Network/virtualNetworks/gmarkley-fnmpq-vnet"
+            "value": ""
         },
         "publicIpAddressName": {
             "value": "winnode-ip"
@@ -30,7 +30,7 @@
             "value": "winnode"
         },
         "virtualMachineRG": {
-            "value": "gmarkley-fnmpq-rg"
+            "value": ""
         },
         "osDiskType": {
             "value": "Premium_LRS"
