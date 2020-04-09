@@ -35,8 +35,12 @@ if [ -n "$1" ]; then
     --template-file template/template.json \
     --parameters template/parameters.json
 
-  echo "Windows Node Added"
+  echo "Windows Node Added waiting 4 min for it to boot"
+  sleep 4m
+  #TODO replace the above sleep with a check for status
+
   NODEIP="$(az vm list-ip-addresses -g gmarkley-fnmpq-rg -n $NODENAME | jq -r '.[] | .virtualMachine.network.publicIpAddresses | .[] | .ipAddress')"
+  echo "Running PS scripts on host:$NODENAME at $NODEIP"
   #create the hosts file need a config file for this.
   az vm run-command invoke --command-id RunPowerShellScript --name $NODENAME -g $INFRAID-rg --scripts @backups/ansibleSetupPS
   az vm run-command invoke --command-id RunPowerShellScript --name $NODENAME -g $INFRAID-rg --scripts @backups/loggingSetupPS
@@ -46,6 +50,7 @@ if [ -n "$1" ]; then
   sed -i "328c\      shell: \"echo $NODENAME\"" windows-machine-config-bootstrapper/tools/ansible/tasks/wsu/main.yaml
 
   #create a hosts file
+  echo "Setup hosts file"
   cp backups/hosts .
   CURL=$(oc cluster-info | head -n1 | sed 's/.*\/\/api.//g'| sed 's/:.*//g')
   sed -i "s/<node_ip>/$NODEIP/g" hosts
@@ -54,7 +59,9 @@ if [ -n "$1" ]; then
   sed -i "s/<cluster_address>/$CURL/g" hosts
 
   #Ansible Commands here down
+  echo "Test ansible connection"
   ansible win -i hosts -m win_ping -v
+  echo "Running bootstapper via Ansible"
   ansible-playbook -i hosts windows-machine-config-bootstrapper/tools/ansible/tasks/wsu/main.yaml -v
 
   oc get nodes
