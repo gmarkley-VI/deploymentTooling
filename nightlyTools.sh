@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -i
 
 if [ -n "$1" ]; then
   if [ -f tools ]; then
