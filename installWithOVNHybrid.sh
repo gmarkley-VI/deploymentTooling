@@ -31,7 +31,7 @@ if [ -n "$1" ]; then
     echo "Setup firewall Rules for network and for $MYIP to use ansivle"
     az network nsg rule create -g $INFRAID-rg --nsg-name $INFRAID-node-nsg -n WinRMHTTPS --priority 510 --source-address-prefixes 40.122.148.16 --destination-port-ranges 5986
     az network nsg rule create -g $INFRAID-rg --nsg-name $INFRAID-node-nsg -n AllLocalWorker --priority 520 --source-address-prefixes 10.0.0.0/16 --destination-port-ranges 0-65535
-    #TODO Automate the process of Deployment via a templete here
+
     NODENAME="winnode"$(date +%d%H%M%S)""
     sed -i "30c\            \"value\": \"$NODENAME\"" template/parameters.json
     PASSWD="$(openssl rand -base64 20)"
