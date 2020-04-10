@@ -38,7 +38,7 @@ if [ -n "$1" ]; then
     --template-file template/template.json \
     --parameters template/parameters.json
 
-  echo "Windows Node Added waiting 4 min for it to boot"
+  echo "Windows Node Added waiting 2 min for it to boot"
   sleep 2m
   #TODO replace the above sleep with a check for status
 
