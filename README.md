@@ -11,3 +11,5 @@ OVN-Hybrid Networking and Azure Only.
     mkdir azure
     ./installWithOVNHybrid.sh azure/
     #follow prompts
+    #Once a cluster is setup then add a windows node
+    ./installWindowsNode.sh azure/
