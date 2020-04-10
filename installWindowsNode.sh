@@ -12,6 +12,7 @@ if [ -n "$1" ]; then
   az network nsg rule create -g $INFRAID-rg --nsg-name $INFRAID-node-nsg -n WinRMHTTPS --priority 510 --source-address-prefixes 40.122.148.16 --destination-port-ranges 5986
   az network nsg rule create -g $INFRAID-rg --nsg-name $INFRAID-node-nsg -n AllLocalWorker --priority 520 --source-address-prefixes 10.0.0.0/16 --destination-port-ranges 0-65535
 
+  echo "Configuring Paramaters"
   NODENAME="winnode"$(date +%d%H%M%S)""
   sed -i "30c\            \"value\": \"$NODENAME\"" template/parameters.json
   PASSWD="$(openssl rand -base64 20)"
@@ -27,8 +28,10 @@ if [ -n "$1" ]; then
   LOCATION="$(az group show -n "$INFRAID-rg" | jq -r '.location')"
   sed -i "6c\            \"value\": \"$LOCATION\"" template/parameters.json
 
+  echo "Configuring Template"
   sed -i "s/kubernetes.io-cluster-ID/kubernetes.io-cluster-$INFRAID/g" template/template.json
 
+  echo "Deploying $NODENAME via template"
   az deployment group create \
     --name addWindowsNode \
     --resource-group $INFRAID-rg \
@@ -36,7 +39,7 @@ if [ -n "$1" ]; then
     --parameters template/parameters.json
 
   echo "Windows Node Added waiting 4 min for it to boot"
-  sleep 4m
+  sleep 2m
   #TODO replace the above sleep with a check for status
 
   NODEIP="$(az vm list-ip-addresses -g gmarkley-fnmpq-rg -n $NODENAME | jq -r '.[] | .virtualMachine.network.publicIpAddresses | .[] | .ipAddress')"
