@@ -10,6 +10,7 @@ if [ -n "$1" ]; then
     openshift-install create manifests --dir=$DIR
     patch $DIR/manifests/cloud-provider-config.yaml backups/cloud-provider-config.patch
     cp $DIR/manifests/cluster-network-02-config.yml $DIR/manifests/cluster-network-03-config.yml
+    sleep 1s
     patch $DIR/manifests/cluster-network-03-config.yml backups/cluster-network-03-config.patch
     echo "Patching Complete Preparing to install"
     openshift-install create cluster --dir=$DIR
