@@ -1,4 +1,4 @@
-# Automate the steps to deploy openshift
+# Steps to deploy
 
 OVN-Hybrid Networking and Azure Only.
 ***
