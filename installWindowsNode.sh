@@ -42,7 +42,7 @@ if [ -n "$1" ]; then
   sleep 2m
   #TODO replace the above sleep with a check for status
 
-  NODEIP="$(az vm list-ip-addresses -g gmarkley-fnmpq-rg -n $NODENAME | jq -r '.[] | .virtualMachine.network.publicIpAddresses | .[] | .ipAddress')"
+
   echo "Running PS scripts on host:$NODENAME at $NODEIP"
   #create the hosts file need a config file for this.
   az vm run-command invoke --command-id RunPowerShellScript --name $NODENAME -g $INFRAID-rg --scripts @backups/ansibleSetupPS
@@ -51,6 +51,9 @@ if [ -n "$1" ]; then
   echo "Setup WMCB"
   git clone https://github.com/openshift/windows-machine-config-bootstrapper.git
   sed -i "328c\      shell: \"echo $NODENAME\"" windows-machine-config-bootstrapper/tools/ansible/tasks/wsu/main.yaml
+
+  NODEIP="$(az vm list-ip-addresses -g gmarkley-fnmpq-rg -n $NODENAME | jq -r '.[] | .virtualMachine.network.publicIpAddresses | .[] | .ipAddress')"
+  #TODO loop to make sure IP is there.
 
   #create a hosts file
   echo "Setup hosts file"
