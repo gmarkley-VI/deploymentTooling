@@ -52,7 +52,7 @@ if [ -n "$1" ]; then
   git clone https://github.com/openshift/windows-machine-config-bootstrapper.git
   sed -i "328c\      shell: \"echo $NODENAME\"" windows-machine-config-bootstrapper/tools/ansible/tasks/wsu/main.yaml
 
-  NODEIP="$(az vm list-ip-addresses -g gmarkley-$INFRAID-rg -n $NODENAME | jq -r '.[] | .virtualMachine.network.publicIpAddresses | .[] | .ipAddress')"
+  NODEIP="$(az vm list-ip-addresses -g $INFRAID-rg -n $NODENAME | jq -r '.[] | .virtualMachine.network.publicIpAddresses | .[] | .ipAddress')"
   #TODO loop to make sure IP is there.
 
   #create a hosts file
