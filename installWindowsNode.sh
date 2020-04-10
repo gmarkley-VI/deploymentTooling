@@ -59,8 +59,7 @@ if [ -n "$1" ]; then
   echo "Setup hosts file for $NODENAME at $NODEIP"
   cp backups/hosts .
   CURL=$(oc cluster-info | head -n1 | sed 's/.*\/\/api.//g'| sed 's/:.*//g')
-  sed -i "s/<node_ip>/$NODEIP/g" hosts
-  sed -i "s/<password>/\x27$PASSWD\x27/g" hosts
+  sed -i "2c\$NODEIP ansible_password=\"$PASSWD\"" hosts
   sed -i "s/<username>/core/g" hosts
   sed -i "s/<cluster_address>/$CURL/g" hosts
 
