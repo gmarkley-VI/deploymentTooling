@@ -45,8 +45,8 @@ if [ -n "$1" ]; then
 
   echo "Running PS scripts on host:$NODENAME"
   #create the hosts file need a config file for this.
-  az vm run-command invoke --command-id RunPowerShellScript --name $NODENAME -g $INFRAID-rg --scripts @backups/ansibleSetupPS
-  az vm run-command invoke --command-id RunPowerShellScript --name $NODENAME -g $INFRAID-rg --scripts @backups/loggingSetupPS
+  az vm run-command invoke --command-id RunPowerShellScript --name $NODENAME -g $INFRAID-rg --scripts @backups/ansibleSetup.ps1
+  az vm run-command invoke --command-id RunPowerShellScript --name $NODENAME -g $INFRAID-rg --scripts @backups/loggingSetup.ps1
 
   echo "Setup WMCB"
   git clone https://github.com/openshift/windows-machine-config-bootstrapper.git
