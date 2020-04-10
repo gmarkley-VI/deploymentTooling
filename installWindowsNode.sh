@@ -43,7 +43,7 @@ if [ -n "$1" ]; then
   #TODO replace the above sleep with a check for status
 
 
-  echo "Running PS scripts on host:$NODENAME at $NODEIP"
+  echo "Running PS scripts on host:$NODENAME"
   #create the hosts file need a config file for this.
   az vm run-command invoke --command-id RunPowerShellScript --name $NODENAME -g $INFRAID-rg --scripts @backups/ansibleSetupPS
   az vm run-command invoke --command-id RunPowerShellScript --name $NODENAME -g $INFRAID-rg --scripts @backups/loggingSetupPS
@@ -56,7 +56,7 @@ if [ -n "$1" ]; then
   #TODO loop to make sure IP is there.
 
   #create a hosts file
-  echo "Setup hosts file"
+  echo "Setup hosts file for $NODENAME at $NODEIP"
   cp backups/hosts .
   CURL=$(oc cluster-info | head -n1 | sed 's/.*\/\/api.//g'| sed 's/:.*//g')
   sed -i "s/<node_ip>/$NODEIP/g" hosts
