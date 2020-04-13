@@ -69,6 +69,9 @@ if [ -n "$1" ]; then
   ansible-playbook -i hosts windows-machine-config-bootstrapper/tools/ansible/tasks/wsu/main.yaml -v
 
   oc get nodes
+
+  #TODO Cleanup tmp and ~/.ansible/tmp/
+
 else
   echo "Install directory not supplied."
 fi
