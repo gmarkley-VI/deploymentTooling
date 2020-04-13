@@ -1,6 +1,6 @@
 # Steps to deploy
 
-OVN-Hybrid Networking and Azure Only.
+OVN-Hybrid Networking
 ***
 ###Pre-Reqs - Fedora 
 (Not commands could be slightly different for your system)
@@ -29,6 +29,6 @@ Install a cluster. You will want to use a directory as shown. You will also need
     ./installOSAzureOVNHybrid.sh azure/
     #follow prompts
     
-Install a Windows Node
+Install a Windows Node - Azure tool only
     
     ./installWindowsNode.sh azure/
