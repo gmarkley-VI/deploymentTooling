@@ -8,10 +8,16 @@ if [ -n "$1" ]; then
   INFRAID="$(jq -r .infraID $1/metadata.json)"
 
   MYIP="$(curl ifconfig.me)"
-  #TODO add a check for the rules first and see if the time can be speed up here.
+
   echo "Setup firewall Rules for network and for $MYIP to use ansible"
-  az network nsg rule create -g $INFRAID-rg --nsg-name $INFRAID-node-nsg -n WinRMHTTPS --priority 510 --source-address-prefixes $MYIP --destination-port-ranges 5986
-  az network nsg rule create -g $INFRAID-rg --nsg-name $INFRAID-node-nsg -n AllLocalWorker --priority 520 --source-address-prefixes 10.0.0.0/16 --destination-port-ranges 0-65535
+  SRCADDRESS="$(az network nsg rule show -g $INFRAID-rg --nsg-name $INFRAID-node-nsg -n WinRMHTTPS | jq -r '.sourceAddressPrefix')"
+  if [ "$SRCADDRESS" != "$MYIP" ]; then
+    az network nsg rule create -g $INFRAID-rg --nsg-name $INFRAID-node-nsg -n WinRMHTTPS --priority 510 --source-address-prefixes $MYIP --destination-port-ranges 5986
+  fi
+  LOCNET="$(az network nsg rule show -g $INFRAID-rg --nsg-name $INFRAID-node-nsg -n AllLocalWorker | jq -r '.sourceAddressPrefix')"
+  if [ "$LOCNET" != "10.0.0.0/16" ]; then
+    az network nsg rule create -g $INFRAID-rg --nsg-name $INFRAID-node-nsg -n AllLocalWorker --priority 520 --source-address-prefixes 10.0.0.0/16 --destination-port-ranges 0-65535
+  fi
 
   echo "Configuring Paramaters"
   NODENAME="winnode"$(date +%d%H%M%S)""
