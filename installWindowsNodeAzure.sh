@@ -73,7 +73,9 @@ if [ -n "$1" ]; then
 
   oc get nodes
 
-  #TODO Cleanup tmp and ~/.ansible/tmp/
+  echo "Cleaning up /tmp"
+  rm -rf /tmp/ansible.*
+  #might need to do this too ~/.ansible/tmp/
 
 else
   echo "Install directory not supplied."
