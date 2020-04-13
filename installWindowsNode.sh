@@ -45,9 +45,6 @@ if [ -n "$1" ]; then
     --template-file template/template.json \
     --parameters template/parameters.json
 
-  #TODO replace the above sleep with a check for status
-
-
   echo "Running PS scripts on host:$NODENAME"
   #create the hosts file need a config file for this.
   az vm run-command invoke --command-id RunPowerShellScript --name $NODENAME -g $INFRAID-rg --scripts @backups/ansibleSetup.ps1
