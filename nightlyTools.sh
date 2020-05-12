@@ -3,8 +3,8 @@
 if [ -n "$1" ]; then
   cd tools || exit
   rm -rf *
-  wget https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp-dev-preview/$1/openshift-install-linux.tar.gz
-  wget https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp-dev-preview/$1/openshift-client-linux.tar.gz
+  wget $1/openshift-install-linux.tar.gz
+  wget $1/openshift-client-linux.tar.gz
   tar -xzvf openshift-install-linux.tar.gz
   tar -xzvf openshift-client-linux.tar.gz
   PREWD="$(pwd)"
@@ -23,5 +23,5 @@ if [ -n "$1" ]; then
   cd ..
   echo "oc, kubectl, openshift-install - nightly $1 installed and configured for use."
 else
-  echo "Nightly  parameter not supplied. Please provide a nightly string"
+  echo "Download URL parameter not supplied. Please provide a URL to installer and client directory. Example: https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/4.4.0/"
 fi
