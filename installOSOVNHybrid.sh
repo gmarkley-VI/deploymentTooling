@@ -5,14 +5,14 @@ if [ -n "$1" ]; then
   DIR="$(echo $1 | tr -d \/)"
   if [ ! -f $DIR/install-config.yaml ]; then
     PREWD="$(pwd)"
-    openshift-install create install-config --dir=$DIR
+    tools/openshift-install create install-config --dir=$DIR
     sed -i 's/OpenShiftSDN/OVNKubernetes/g' $DIR/install-config.yaml
-    openshift-install create manifests --dir=$DIR
+    tools/openshift-install create manifests --dir=$DIR
     patch $DIR/manifests/cloud-provider-config.yaml backups/cloud-provider-config.patch
     cp $DIR/manifests/cluster-network-02-config.yml $DIR/manifests/cluster-network-03-config.yml
     patch $DIR/manifests/cluster-network-03-config.yml backups/cluster-network-03-config.patch
     echo "Patching Complete Preparing to install"
-    openshift-install create cluster --dir=$DIR
+    tools/openshift-install create cluster --dir=$DIR
     echo "Install is completed"
     export KUBECONFIG=$PREWD/$DIR/auth/kubeconfig
     oc get nodes
