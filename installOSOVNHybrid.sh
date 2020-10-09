@@ -15,8 +15,8 @@ if [ -n "$1" ]; then
     tools/openshift-install create cluster --dir=$DIR
     echo "Install is completed"
     export KUBECONFIG=$PREWD/$DIR/auth/kubeconfig
-    oc get nodes
-    HYBRID="$(oc get network.operator cluster -o yaml | grep -cim1 hybridClusterNetwork)"
+    tools/oc get nodes
+    HYBRID="$(tools/oc get network.operator cluster -o yaml | grep -cim1 hybridClusterNetwork)"
     if [ "$HYBRID" = 0 ]; then
       echo "Hybrid network did not setup correctly"
       exit
