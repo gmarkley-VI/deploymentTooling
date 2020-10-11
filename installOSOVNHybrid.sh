@@ -4,9 +4,9 @@
 if [ -n "$1" ]; then
   if [ ! -f $1/install-config.yaml ]; then
     openshift-install create install-config --dir=$1
-    sed -i 's/OpenShiftSDN/OVNKubernetes/g' $1/install-config.yaml
+    sed -i.bak "s/OpenShiftSDN/OVNKubernetes/g" AWS/install-config.yaml
     openshift-install create manifests --dir=$1
-    patch $1/manifests/cloud-provider-config.yaml backups/cloud-provider-config.patch
+    ##patch $1/manifests/cloud-provider-config.yaml backups/cloud-provider-config.patch
     cp $1/manifests/cluster-network-02-config.yml $1/manifests/cluster-network-03-config.yml
     patch $1/manifests/cluster-network-03-config.yml backups/cluster-network-03-config.patch
     echo "Patching Complete Preparing to install"
