@@ -2,7 +2,7 @@
 
 #create the config
 if [ -n "$1" ]; then
-  DIR="$(echo $1 | tr -d \/)"
+  DIR=$1
   if [ ! -f $DIR/install-config.yaml ]; then
     openshift-install create install-config --dir=$DIR
     sed -i 's/OpenShiftSDN/OVNKubernetes/g' $DIR/install-config.yaml
