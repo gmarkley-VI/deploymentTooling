@@ -1,9 +1,0 @@
-[win]
-<node_ip> ansible_password=<password>
-
-[win:vars]
-ansible_user=<username>
-cluster_address=<cluster_address>
-ansible_connection=winrm
-ansible_ssh_port=5986
-ansible_winrm_server_cert_validation=ignore
