@@ -1,18 +1,10 @@
 # Steps to deploy
 
 OVN-Hybrid Networking
-***
-###Pre-Reqs - Fedora 
-(Not commands could be slightly different for your system)
-  
-    sudo dnf install python3 python3-libselinux jq git
-    pip install ansible==2.9 pywinrm selinux --user
-    
-###Install Azure CLI and login
+*** 
+###Install OCP with OVN Hybrid
 
-https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest
-  
-  Example steps
+Example steps
 
   * git clone this repo
 
@@ -26,9 +18,5 @@ https://openshift-release.svc.ci.openshift.org/
 Install a cluster. You will want to use a directory as shown. You will also need to get your pull secret here https://cloud.redhat.com/openshift/install/azure/installer-provisioned
 
     mkdir azure
-    ./installOSAzureOVNHybrid.sh azure/
+    ./installOSOVNHybrid.sh azure/
     #follow prompts
-    
-Install a Windows Node - Azure tool only
-    
-    ./installWindowsNode.sh azure/
