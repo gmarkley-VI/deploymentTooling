@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: win-chess-webserver
+  labels:
+    app: win-chess-webserver
+spec:
+  ports:
+    # the port that this service should serve on
+  - port: 80
+    targetPort: 80
+  selector:
+    app: win-chess-webserver
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: win-chess-webserver
+  name: win-chess-webserver
+spec:
+  selector:
+    matchLabels:
+      app: win-chess-webserver
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: win-chess-webserver
+      name: win-chess-webserver
+    spec:
+      tolerations:
+      - key: "os"
+        value: "Windows"
+        Effect: "NoSchedule"
+      containers:
+      - name: windowschesswebserver
+        image: quay.io/gmarkley_vi/iis-chess
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          windowsOptions:
+            runAsUserName: "ContainerAdministrator"
+      nodeSelector:
+        beta.kubernetes.io/os: windows
